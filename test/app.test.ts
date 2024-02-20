@@ -1,4 +1,6 @@
-import { launchMission, createPlateau, landRover } from "../src/app";
+import { launchMission } from "../src/app";
+import { createPlateau } from "../src/plateau";
+import { landRover } from "../src/missionControl";
 
 describe("launchMission", () => {
   it("should print 'Hello, Mars!'", () => {
