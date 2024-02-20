@@ -1,5 +1,5 @@
-function launchMission() {
-  console.log("Hello, Mars!");
+export function launchMission() {
+  return "Hello, Mars!";
 }
 
 launchMission();
