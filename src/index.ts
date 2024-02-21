@@ -57,7 +57,7 @@ function isOrientation(input: string): input is Rover["orientation"] {
   return ["N", "S", "E", "W"].includes(input);
 }
 
-function isValidCoordinates(input: Coordinates): input is Coordinates {
+export function isValidCoordinates(input: Coordinates): input is Coordinates {
   return input.x > 0 && input.y > 0;
 }
 

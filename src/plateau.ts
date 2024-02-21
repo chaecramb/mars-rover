@@ -20,3 +20,20 @@ export const createPlateau = (width: number, height: number): Plateau => {
   }
   return plateau;
 };
+
+export const isPassableTerrain = (
+  coordinates: Coordinates,
+  plateau: Plateau
+) => {
+  return (
+    plateau[coordinates.y] && plateau[coordinates.y][coordinates.x] === "."
+  );
+};
+
+export const printPlateau = (plateau: Plateau) => {
+  const height = plateau.length;
+  const width = plateau[0].length;
+  for (let y = height - 1; y >= 0; y--) {
+    console.log(plateau[y].join(""));
+  }
+};
