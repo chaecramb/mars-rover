@@ -1,12 +1,18 @@
-import { Coordinates, createPlateau } from "./plateau";
-import { Rover, launchRover } from "./rover";
+import { Plateau, Coordinates, createPlateau } from "./plateau";
+import {
+  Rover,
+  launchRover,
+  RoverInstruction,
+  moveRover,
+  turnRover,
+} from "./rover";
 
 export const handleInput = (input: string) => {
   if (!input) {
     throw new Error("No input provided");
   }
 
-  const [plateauCoordinates, roverStart] = input.split("\n");
+  const [plateauCoordinates, roverStart, roverInstructions] = input.split("\n");
 
   if (!roverStart) {
     throw new Error("Rover starting position not provided");
@@ -18,16 +24,20 @@ export const handleInput = (input: string) => {
     y: parseInt(y),
   };
 
-  if (!isValidCoordinates(plateauUpperRight)) {
+  // Subtract 1 to width and height as the first line of input signifies the
+  // rightmost and uppermost coordinates of the plateau, not the width and height.
+  if (
+    !isValidCoordinates({
+      x: plateauUpperRight.x - 1,
+      y: plateauUpperRight.y - 1,
+    })
+  ) {
     throw new Error("Invalid plateau coordinates");
   }
 
   // Add 1 to width and height as the first line of input signifies the
   // rightmost and uppermost coordinates of the plateau, not the width and height.
-  const plateau = createPlateau(
-    plateauUpperRight.x + 1,
-    plateauUpperRight.y + 1
-  );
+  let plateau = createPlateau(plateauUpperRight.x + 1, plateauUpperRight.y + 1);
 
   const [roverX, roverY, roverOrientation] = roverStart.split(" ");
   const roverStartPosition: Coordinates = {
@@ -48,30 +58,43 @@ export const handleInput = (input: string) => {
     orientation: roverOrientation,
   };
 
-  launchRover(plateau, rover);
+  plateau = launchRover(plateau, rover);
+
+  if (roverInstructions) {
+    const instructionsArray = roverInstructions.split(" ");
+    if (instructionsArray.every(isRoverInstruction)) {
+      instructionsArray.forEach((instruction) => {
+        plateau = executeInstruction(plateau, rover, instruction);
+      });
+    } else {
+      throw new Error("Invalid rover instructions");
+    }
+  }
 
   return plateau;
 };
 
-function isOrientation(input: string): input is Rover["orientation"] {
+function isOrientation(input: any): input is Rover["orientation"] {
   return ["N", "S", "E", "W"].includes(input);
 }
 
-export function isValidCoordinates(input: Coordinates): input is Coordinates {
-  return input.x > 0 && input.y > 0;
+export function isValidCoordinates(input: any): input is Coordinates {
+  return input.x >= 0 && input.y >= 0;
 }
 
-// Some scaffold for handling instructions
+function isRoverInstruction(input: any): input is RoverInstruction {
+  return ["L", "R", "M"].includes(input);
+}
 
-// export const executeInstruction(instruction: RoverInstruction) {
-
-// function isInstruction(input: string): input is RoverInstruction {
-//     return ['L', 'R', 'M'].includes (input);
-//     return RoverInstruction.includes (input); // does this work?
-// }
-
-// const someInstruction = getInstruction ();
-
-// if (isInstruction(someInstruction)) {
-//   executeInstruction (someInstruction);
-// }
+function executeInstruction(
+  plateau: Plateau,
+  rover: Rover,
+  instruction: RoverInstruction
+): Plateau {
+  if (instruction === "L" || instruction === "R") {
+    plateau = turnRover(plateau, rover, instruction);
+  } else if (instruction === "M") {
+    plateau = moveRover(plateau, rover);
+  }
+  return plateau;
+}

@@ -55,7 +55,7 @@ export const turnRover = (
   plateau: Plateau,
   rover: Rover,
   instruction: RoverInstruction
-) => {
+): Plateau => {
   switch (instruction) {
     case "L":
       switch (rover.orientation) {
