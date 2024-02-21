@@ -50,3 +50,48 @@ export const moveRover = (plateau: Plateau, rover: Rover): Plateau => {
   }
   return plateau;
 };
+
+export const turnRover = (
+  plateau: Plateau,
+  rover: Rover,
+  instruction: RoverInstruction
+) => {
+  switch (instruction) {
+    case "L":
+      switch (rover.orientation) {
+        case "N":
+          rover.orientation = "W";
+          break;
+        case "S":
+          rover.orientation = "E";
+          break;
+        case "E":
+          rover.orientation = "N";
+          break;
+        case "W":
+          rover.orientation = "S";
+          break;
+      }
+      break;
+    case "R":
+      switch (rover.orientation) {
+        case "N":
+          rover.orientation = "E";
+          break;
+        case "S":
+          rover.orientation = "W";
+          break;
+        case "E":
+          rover.orientation = "S";
+          break;
+        case "W":
+          rover.orientation = "N";
+          break;
+      }
+      break;
+  }
+
+  plateau[rover.coordinates.y][rover.coordinates.x] =
+    ORIENTATION_SYMBOLS[rover.orientation];
+  return plateau;
+};

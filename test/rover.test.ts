@@ -1,4 +1,4 @@
-import { Rover, launchRover, moveRover } from "../src/rover";
+import { Rover, launchRover, moveRover, turnRover } from "../src/rover";
 import { createPlateau, printPlateau } from "../src/plateau";
 
 describe("launchRover", () => {
@@ -69,6 +69,7 @@ describe("moveRover", () => {
       orientation: "N",
     };
 
+    // Expected appears upside down as 0,0 is the bottom left corner
     const expected = [
       [".", ".", ".", ".", "."],
       [".", ".", ".", ".", "."],
@@ -97,6 +98,7 @@ describe("moveRover", () => {
       orientation: "N",
     };
 
+    // Expected appears upside down as 0,0 is the bottom left corner
     const expected = [
       [".", ".", ".", ".", "."],
       [".", ".", ".", ".", "."],
@@ -105,6 +107,64 @@ describe("moveRover", () => {
     ];
 
     const actual = moveRover(plateau, rover);
+
+    expect(actual).toEqual(expected);
+  });
+});
+
+describe("turnRover", () => {
+  it("should turn the rover left when given a valid input", () => {
+    const plateau = [
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", "^", ".", ".", "."],
+    ];
+
+    const rover: Rover = {
+      coordinates: {
+        x: 1,
+        y: 3,
+      },
+      orientation: "N",
+    };
+
+    const expected = [
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", "<", ".", ".", "."],
+    ];
+
+    const actual = turnRover(plateau, rover, "L");
+
+    expect(actual).toEqual(expected);
+  });
+
+  it("should turn the rover right when given a valid input", () => {
+    const plateau = [
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", "^", ".", ".", "."],
+    ];
+
+    const rover: Rover = {
+      coordinates: {
+        x: 1,
+        y: 3,
+      },
+      orientation: "N",
+    };
+
+    const expected = [
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", ">", ".", ".", "."],
+    ];
+
+    const actual = turnRover(plateau, rover, "R");
 
     expect(actual).toEqual(expected);
   });
