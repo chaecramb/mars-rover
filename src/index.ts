@@ -8,56 +8,59 @@ export const handleInput = (input: string) => {
 
   const [plateauCoordinates, ...rovers] = input.split("\n");
 
+  const [x, y] = plateauCoordinates.split(" ");
+  const plateauUpperRight = {
+    x: parseInt(x),
+    y: parseInt(y),
+  };
+
+  // Subtract 1 to width and height as the first line of input signifies the
+  // rightmost and uppermost coordinates of the plateau, not the width and height.
+  if (
+    !isCoordinates({
+      x: plateauUpperRight.x - 1,
+      y: plateauUpperRight.y - 1,
+    })
+  ) {
+    throw new Error("Invalid plateau coordinates");
+  }
+
+  // Add 1 to width and height as the first line of input signifies the
+  // rightmost and uppermost coordinates of the plateau, not the width and height.
+  let plateau = createPlateau(plateauUpperRight.x + 1, plateauUpperRight.y + 1);
+
   if (rovers.length === 0) {
     throw new Error("Rover starting position not provided");
   }
 
   const roversFinalPositions = [];
+  const occupiedCoordinates: Coordinates[] = [];
 
   for (let i = 0; i < rovers.length; i += 2) {
     const roverStart = rovers[i];
     const roverInstructions = rovers[i + 1];
 
-    const [x, y] = plateauCoordinates.split(" ");
-    const plateauUpperRight = {
-      x: parseInt(x),
-      y: parseInt(y),
-    };
-
-    // Subtract 1 to width and height as the first line of input signifies the
-    // rightmost and uppermost coordinates of the plateau, not the width and height.
-    if (
-      !isValidCoordinates({
-        x: plateauUpperRight.x - 1,
-        y: plateauUpperRight.y - 1,
-      })
-    ) {
-      throw new Error("Invalid plateau coordinates");
-    }
-
-    // Add 1 to width and height as the first line of input signifies the
-    // rightmost and uppermost coordinates of the plateau, not the width and height.
-    let plateau = createPlateau(
-      plateauUpperRight.x + 1,
-      plateauUpperRight.y + 1
-    );
-
     const [roverX, roverY, roverOrientation] = roverStart.split(" ");
-    const roverStartPosition: Coordinates = {
+    const roverCoordinates: Coordinates = {
       x: parseInt(roverX),
       y: parseInt(roverY),
     };
+
+    if (isDuplicateStartingPosition(occupiedCoordinates, roverCoordinates)) {
+      throw new Error("Duplicate rover starting position");
+    }
+    occupiedCoordinates.push(roverCoordinates);
 
     if (!isOrientation(roverOrientation)) {
       throw new Error("Invalid orientation");
     }
 
-    if (!isValidCoordinates(roverStartPosition)) {
+    if (!isCoordinates(roverCoordinates)) {
       throw new Error("Invalid rover coordinates");
     }
 
     let rover: Rover = {
-      coordinates: roverStartPosition,
+      coordinates: roverCoordinates,
       orientation: roverOrientation,
     };
 
@@ -87,7 +90,7 @@ function isOrientation(input: any): input is Rover["orientation"] {
   return ["N", "S", "E", "W"].includes(input);
 }
 
-export function isValidCoordinates(input: any): input is Coordinates {
+export function isCoordinates(input: any): input is Coordinates {
   return input.x >= 0 && input.y >= 0;
 }
 
@@ -112,3 +115,15 @@ function executeInstruction(
 
   return [updatedPlateau, roverNewPosition];
 }
+
+const isDuplicateStartingPosition = (
+  startingPositions: Coordinates[],
+  roverCordinates: Coordinates
+) => {
+  return startingPositions.some((occupiedCoordinates) => {
+    return (
+      roverCordinates.x === occupiedCoordinates.x &&
+      roverCordinates.y === occupiedCoordinates.y
+    );
+  });
+};

@@ -72,6 +72,14 @@ describe("handleInput", () => {
     expect(actual).toEqual(expected);
   });
 
+  it(`should throw an error if input includes two rovers with the same coordinates`, () => {
+    const input = "3 3\n3 3 W\nM R M\n3 3 S\nM M R";
+
+    expect(() => handleInput(input)).toThrow(
+      "Duplicate rover starting position"
+    );
+  });
+
   it(`should handle multiple rovers`, () => {
     const input = "3 3\n1 2 W\nM R M\n3 3 S\nM M R";
     const expected = "0 3 N\n3 1 W";

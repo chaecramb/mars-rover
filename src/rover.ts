@@ -1,5 +1,5 @@
 import { Plateau, isPassableTerrain } from "./plateau";
-import { isValidCoordinates } from "./index";
+import { isCoordinates } from "./index";
 
 export type Rover = {
   coordinates: {
