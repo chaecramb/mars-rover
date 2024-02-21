@@ -42,12 +42,14 @@ export const printPlateau = (plateau: Plateau) => {
 
 export const updatePlateau = (
   plateau: Plateau,
-  roverPreviousPosition: Rover,
-  roverNewPosition: Rover
+  roverNewPosition: Rover,
+  roverPreviousPosition?: Rover
 ): Plateau => {
-  plateau[roverPreviousPosition.coordinates.y][
-    roverPreviousPosition.coordinates.x
-  ] = ".";
+  if (roverPreviousPosition) {
+    plateau[roverPreviousPosition.coordinates.y][
+      roverPreviousPosition.coordinates.x
+    ] = ".";
+  }
   plateau[roverNewPosition.coordinates.y][roverNewPosition.coordinates.x] =
     ORIENTATION_SYMBOLS[roverNewPosition.orientation];
   return plateau;

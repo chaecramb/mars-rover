@@ -19,14 +19,9 @@ describe("handleInput", () => {
   });
 
   it("should return a plateau with a rover in the correct position, facing north, based on the first two lines of input", () => {
-    const input = `3 3
-1 2 N`;
-    const expected = [
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      [".", "^", ".", "."],
-      [".", ".", ".", "."],
-    ];
+    const input = `3 3\n1 2 N`;
+    const expected = "1 2 N";
+
     const actual = handleInput(input);
 
     expect(actual).toEqual(expected);
@@ -34,11 +29,8 @@ describe("handleInput", () => {
 
   it("should return a plateau with a rover in the correct position, facing east, based on the first two lines of input", () => {
     const input = "7 2\n0 1 E";
-    const expected = [
-      [".", ".", ".", ".", ".", ".", ".", "."],
-      [">", ".", ".", ".", ".", ".", ".", "."],
-      [".", ".", ".", ".", ".", ".", ".", "."],
-    ];
+    const expected = "0 1 E";
+
     const actual = handleInput(input);
 
     expect(actual).toEqual(expected);
@@ -46,12 +38,7 @@ describe("handleInput", () => {
 
   it("should move the rover north when given a valid rover instruction", () => {
     const input = "3 3\n1 2 N\nM";
-    const expected = [
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      [".", "^", ".", "."],
-    ];
+    const expected = "1 3 N";
 
     const actual = handleInput(input);
 
@@ -60,12 +47,7 @@ describe("handleInput", () => {
 
   it("should move the rover west when given a valid rover instruction", () => {
     const input = "3 3\n1 2 W\nM";
-    const expected = [
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      ["<", ".", ".", "."],
-      [".", ".", ".", "."],
-    ];
+    const expected = "0 2 W";
 
     const actual = handleInput(input);
 
@@ -74,27 +56,25 @@ describe("handleInput", () => {
 
   it("should correctly follow a sequence of instructions", () => {
     const input = "3 3\n1 2 W\nM R M R M M";
-    const expected = [
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      [".", ".", ">", "."],
-    ];
+    const expected = "2 3 E";
 
     const actual = handleInput(input);
 
     expect(actual).toEqual(expected);
   });
 
-  it(`should correctly follow a sequence of instructions, 
-ignoring movements that would take the rover off the plateau`, () => {
+  it("should correctly follow a sequence of instructions, ignoring movements that would take the rover off the plateau", () => {
     const input = "3 3\n1 2 W\nM R M M L M R R M M";
-    const expected = [
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      [".", ".", ".", "."],
-      [".", ".", ">", "."],
-    ];
+    const expected = "2 3 E";
+
+    const actual = handleInput(input);
+
+    expect(actual).toEqual(expected);
+  });
+
+  it(`should handle multiple rovers`, () => {
+    const input = "3 3\n1 2 W\nM R M\n3 3 S\nM M R";
+    const expected = "0 3 N\n3 1 W";
 
     const actual = handleInput(input);
 

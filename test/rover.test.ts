@@ -1,31 +1,8 @@
-import { Rover, launchRover, moveRover, turnRover } from "../src/rover";
+import { Rover, moveRover, turnRover } from "../src/rover";
 import { createPlateau, printPlateau } from "../src/plateau";
 
-describe("launchRover", () => {
-  it("should return an object with width and height properties", () => {
-    const plateau = createPlateau(5, 4);
-    const rover: Rover = {
-      coordinates: {
-        x: 1,
-        y: 2,
-      },
-      orientation: "N",
-    };
-
-    const expected = [
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", "^", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-    ];
-    const actual = launchRover(plateau, rover);
-
-    expect(actual).toEqual(expected);
-  });
-});
-
 describe("moveRover", () => {
-  it("should move the rover forward when terrain is passable", () => {
+  it("should move the rover north when facing N and terrain is passable", () => {
     const plateau = [
       [".", ".", ".", ".", "."],
       [".", ".", ".", ".", "."],
@@ -33,7 +10,7 @@ describe("moveRover", () => {
       [".", ".", ".", ".", "."],
     ];
 
-    const rover: Rover = {
+    const roverInitialPosition: Rover = {
       coordinates: {
         x: 1,
         y: 2,
@@ -41,16 +18,104 @@ describe("moveRover", () => {
       orientation: "N",
     };
 
-    const expected = [
-      [".", ".", ".", ".", "."],
+    const roverNewPosition: Rover = {
+      coordinates: {
+        x: 1,
+        y: 3,
+      },
+      orientation: "N",
+    };
+
+    const actual = moveRover(plateau, roverInitialPosition);
+
+    expect(actual).toEqual(roverNewPosition);
+  });
+
+  it("should move the rover east when facing E and terrain is passable", () => {
+    const plateau = [
       [".", ".", ".", ".", "."],
       [".", ".", ".", ".", "."],
       [".", "^", ".", ".", "."],
+      [".", ".", ".", ".", "."],
     ];
 
-    const actual = moveRover(plateau, rover);
+    const roverInitialPosition: Rover = {
+      coordinates: {
+        x: 1,
+        y: 2,
+      },
+      orientation: "E",
+    };
 
-    expect(actual).toEqual(expected);
+    const roverNewPosition: Rover = {
+      coordinates: {
+        x: 2,
+        y: 2,
+      },
+      orientation: "E",
+    };
+
+    const actual = moveRover(plateau, roverInitialPosition);
+
+    expect(actual).toEqual(roverNewPosition);
+  });
+
+  it("should move the rover south when facing S and terrain is passable", () => {
+    const plateau = [
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", "^", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+    ];
+
+    const roverInitialPosition: Rover = {
+      coordinates: {
+        x: 1,
+        y: 2,
+      },
+      orientation: "S",
+    };
+
+    const roverNewPosition: Rover = {
+      coordinates: {
+        x: 1,
+        y: 1,
+      },
+      orientation: "S",
+    };
+
+    const actual = moveRover(plateau, roverInitialPosition);
+
+    expect(actual).toEqual(roverNewPosition);
+  });
+
+  it("should move the rover west when facing W and terrain is passable", () => {
+    const plateau = [
+      [".", ".", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+      [".", "^", ".", ".", "."],
+      [".", ".", ".", ".", "."],
+    ];
+
+    const roverInitialPosition: Rover = {
+      coordinates: {
+        x: 1,
+        y: 2,
+      },
+      orientation: "W",
+    };
+
+    const roverNewPosition: Rover = {
+      coordinates: {
+        x: 0,
+        y: 2,
+      },
+      orientation: "W",
+    };
+
+    const actual = moveRover(plateau, roverInitialPosition);
+
+    expect(actual).toEqual(roverNewPosition);
   });
 
   it("should not move the rover forward when there's another rover in the way", () => {
@@ -61,7 +126,7 @@ describe("moveRover", () => {
       [".", ">", ".", ".", "."],
     ];
 
-    const rover: Rover = {
+    const roverInitialPosition: Rover = {
       coordinates: {
         x: 1,
         y: 2,
@@ -69,17 +134,17 @@ describe("moveRover", () => {
       orientation: "N",
     };
 
-    // Expected appears upside down as 0,0 is the bottom left corner
-    const expected = [
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", "^", ".", ".", "."],
-      [".", ">", ".", ".", "."],
-    ];
+    const roverNewPosition: Rover = {
+      coordinates: {
+        x: 1,
+        y: 2,
+      },
+      orientation: "N",
+    };
 
-    const actual = moveRover(plateau, rover);
+    const actual = moveRover(plateau, roverInitialPosition);
 
-    expect(actual).toEqual(expected);
+    expect(actual).toEqual(roverNewPosition);
   });
 
   it("should not move the rover forward when it's at the edge of the plateau", () => {
@@ -90,7 +155,7 @@ describe("moveRover", () => {
       [".", "^", ".", ".", "."],
     ];
 
-    const rover: Rover = {
+    const roverInitialPosition: Rover = {
       coordinates: {
         x: 1,
         y: 3,
@@ -98,17 +163,17 @@ describe("moveRover", () => {
       orientation: "N",
     };
 
-    // Expected appears upside down as 0,0 is the bottom left corner
-    const expected = [
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", "^", ".", ".", "."],
-    ];
+    const roverNewPosition: Rover = {
+      coordinates: {
+        x: 1,
+        y: 3,
+      },
+      orientation: "N",
+    };
 
-    const actual = moveRover(plateau, rover);
+    const actual = moveRover(plateau, roverInitialPosition);
 
-    expect(actual).toEqual(expected);
+    expect(actual).toEqual(roverNewPosition);
   });
 });
 
@@ -121,7 +186,7 @@ describe("turnRover", () => {
       [".", "^", ".", ".", "."],
     ];
 
-    const rover: Rover = {
+    const roverInitialOrientation: Rover = {
       coordinates: {
         x: 1,
         y: 3,
@@ -129,16 +194,17 @@ describe("turnRover", () => {
       orientation: "N",
     };
 
-    const expected = [
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", "<", ".", ".", "."],
-    ];
+    const roverNewOrientation: Rover = {
+      coordinates: {
+        x: 1,
+        y: 3,
+      },
+      orientation: "W",
+    };
 
-    const actual = turnRover(plateau, rover, "L");
+    const actual = turnRover(plateau, roverInitialOrientation, "L");
 
-    expect(actual).toEqual(expected);
+    expect(actual).toEqual(roverNewOrientation);
   });
 
   it("should turn the rover right when given a valid input", () => {
@@ -149,7 +215,7 @@ describe("turnRover", () => {
       [".", "^", ".", ".", "."],
     ];
 
-    const rover: Rover = {
+    const roverInitialOrientation: Rover = {
       coordinates: {
         x: 1,
         y: 3,
@@ -157,15 +223,16 @@ describe("turnRover", () => {
       orientation: "N",
     };
 
-    const expected = [
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", ".", ".", ".", "."],
-      [".", ">", ".", ".", "."],
-    ];
+    const roverNewOrientation: Rover = {
+      coordinates: {
+        x: 1,
+        y: 3,
+      },
+      orientation: "E",
+    };
 
-    const actual = turnRover(plateau, rover, "R");
+    const actual = turnRover(plateau, roverInitialOrientation, "R");
 
-    expect(actual).toEqual(expected);
+    expect(actual).toEqual(roverNewOrientation);
   });
 });

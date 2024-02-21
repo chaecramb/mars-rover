@@ -18,13 +18,7 @@ export const ORIENTATION_SYMBOLS = {
 
 export type RoverInstruction = "L" | "R" | "M";
 
-export const launchRover = (plateau: Plateau, rover: Rover) => {
-  plateau[rover.coordinates.y][rover.coordinates.x] =
-    ORIENTATION_SYMBOLS[rover.orientation];
-  return plateau;
-};
-
-export const moveRover = (plateau: Plateau, rover: Rover): Plateau => {
+export const moveRover = (plateau: Plateau, rover: Rover): Rover => {
   let newCoordinates = { x: rover.coordinates.x, y: rover.coordinates.y };
 
   switch (rover.orientation) {
@@ -43,19 +37,16 @@ export const moveRover = (plateau: Plateau, rover: Rover): Plateau => {
   }
 
   if (isPassableTerrain(newCoordinates, plateau)) {
-    plateau[rover.coordinates.y][rover.coordinates.x] = ".";
     rover.coordinates = newCoordinates;
-    plateau[rover.coordinates.y][rover.coordinates.x] =
-      ORIENTATION_SYMBOLS[rover.orientation];
   }
-  return plateau;
+  return rover;
 };
 
 export const turnRover = (
   plateau: Plateau,
   rover: Rover,
   instruction: RoverInstruction
-): Plateau => {
+): Rover => {
   switch (instruction) {
     case "L":
       switch (rover.orientation) {
@@ -91,7 +82,5 @@ export const turnRover = (
       break;
   }
 
-  plateau[rover.coordinates.y][rover.coordinates.x] =
-    ORIENTATION_SYMBOLS[rover.orientation];
-  return plateau;
+  return rover;
 };

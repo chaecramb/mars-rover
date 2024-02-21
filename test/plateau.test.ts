@@ -80,7 +80,7 @@ describe("updatePlateau", () => {
       [".", ".", ".", "."],
     ];
     expect(
-      updatePlateau(plateau, roverPreviousPosition, roverNewPosition)
+      updatePlateau(plateau, roverNewPosition, roverPreviousPosition)
     ).toEqual(expected);
   });
 
@@ -113,7 +113,7 @@ describe("updatePlateau", () => {
       [".", ".", ".", "."],
     ];
     expect(
-      updatePlateau(plateau, roverPreviousPosition, roverNewPosition)
+      updatePlateau(plateau, roverNewPosition, roverPreviousPosition)
     ).toEqual(expected);
   });
 
@@ -146,7 +146,7 @@ describe("updatePlateau", () => {
       [".", "^", ".", "."],
     ];
     expect(
-      updatePlateau(plateau, roverPreviousPosition, roverNewPosition)
+      updatePlateau(plateau, roverNewPosition, roverPreviousPosition)
     ).toEqual(expected);
   });
 });
