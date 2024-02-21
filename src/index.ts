@@ -1,5 +1,6 @@
 import { Plateau, Coordinates, createPlateau, updatePlateau } from "./plateau";
 import { Rover, RoverInstruction, moveRover, turnRover } from "./rover";
+import { main } from "./ui";
 
 export const handleInput = (input: string) => {
   if (!input) {
@@ -86,7 +87,7 @@ export const handleInput = (input: string) => {
     .trimEnd();
 };
 
-function isOrientation(input: any): input is Rover["orientation"] {
+export function isOrientation(input: any): input is Rover["orientation"] {
   return ["N", "S", "E", "W"].includes(input);
 }
 
@@ -118,12 +119,14 @@ function executeInstruction(
 
 const isDuplicateStartingPosition = (
   startingPositions: Coordinates[],
-  roverCordinates: Coordinates
+  roverCoordinates: Coordinates
 ) => {
   return startingPositions.some((occupiedCoordinates) => {
     return (
-      roverCordinates.x === occupiedCoordinates.x &&
-      roverCordinates.y === occupiedCoordinates.y
+      roverCoordinates.x === occupiedCoordinates.x &&
+      roverCoordinates.y === occupiedCoordinates.y
     );
   });
 };
+
+main().catch((err) => console.error(err));
