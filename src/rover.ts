@@ -9,7 +9,7 @@ export type Rover = {
   orientation: "N" | "S" | "E" | "W";
 };
 
-const ORIENTATION_SYMBOLS = {
+export const ORIENTATION_SYMBOLS = {
   N: "^",
   S: "V",
   E: ">",

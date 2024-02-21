@@ -1,3 +1,5 @@
+import { Rover, ORIENTATION_SYMBOLS } from "./rover";
+
 export type Plateau = string[][];
 
 export type Coordinates = {
@@ -36,4 +38,17 @@ export const printPlateau = (plateau: Plateau) => {
   for (let y = height - 1; y >= 0; y--) {
     console.log(plateau[y].join(""));
   }
+};
+
+export const updatePlateau = (
+  plateau: Plateau,
+  roverPreviousPosition: Rover,
+  roverNewPosition: Rover
+): Plateau => {
+  plateau[roverPreviousPosition.coordinates.y][
+    roverPreviousPosition.coordinates.x
+  ] = ".";
+  plateau[roverNewPosition.coordinates.y][roverNewPosition.coordinates.x] =
+    ORIENTATION_SYMBOLS[roverNewPosition.orientation];
+  return plateau;
 };
