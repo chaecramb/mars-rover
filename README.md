@@ -96,5 +96,5 @@ Controls
 ### File Based Input
 
 ```sh
-npm start <filename>
+npm start \<filename\>
 ```
