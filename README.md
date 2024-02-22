@@ -82,7 +82,7 @@ For GUI mode it is suggested to run in a full screen standalone terminal window.
 npm start
 ```
 
-Controls
+#### Controls
 
 - Movement
   - For simplicity of keyboard control, the arrow keys can be used to control the rover
