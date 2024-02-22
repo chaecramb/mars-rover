@@ -33,7 +33,7 @@ Stretch tasks:
 
 - [x] Handle multiple rovers on the same plateau.
 - [x] Implement a UI to control the rovers.
-- [ ] Supple input via a file
+- [x] Supple input via a file
 
 TODO:
 
@@ -67,19 +67,19 @@ TODO:
    npm install
    ```
 
-4. Execute the rover simulation:
-
-   ```sh
-   npm start
-   ```
-
-5. (optional) Run tests:
+4. (optional) Run tests:
 
 ```sh
 npm test
 ```
 
 ## Usage
+
+### GUI
+
+```sh
+npm start
+```
 
 For simplicity of keyboard control, the arrow keys can be used to control the rover (these will be translated to commands the rover understands, e.g. L R M.)
 
@@ -88,3 +88,9 @@ Press q to quit the simulation.
 Press l to launch another rover
 
 Press s to switch active rovers. This will cycle through the active rovers.
+
+### File Based Input
+
+```sh
+npm start <filename>
+```

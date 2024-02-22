@@ -2,57 +2,73 @@ const blessed = require("blessed");
 import { Rover, moveRover, turnRover } from "./rover";
 import { isOrientation } from "./index";
 import { Plateau, createPlateau, updatePlateau } from "./plateau";
-
-const display = blessed.screen({
-  smartCSR: true,
-  title: "Map Display",
-});
-
-const orientationSymbols = {
-  N: "N",
-  E: "E",
-  S: "S",
-  W: "W",
-  active: {
-    N: "^",
-    E: ">",
-    S: "v",
-    W: "<",
-  },
-};
-
-display.key(["escape", "q", "C-c"], () => process.exit(0));
-
-function promptUser(question: string, defaultValue = ""): Promise<string> {
-  const getInput = blessed.prompt({
-    border: "line",
-    height: "shrink",
-    width: "half",
-    top: "center",
-    left: "center",
-    label: " {blue-fg}Question{/blue-fg} ",
-    tags: true,
-    keys: true,
-    vi: true,
-    hidden: false,
-  });
-  return new Promise((resolve, reject) => {
-    display.append(getInput);
-    getInput.input(question, defaultValue, (err: any, value: any) => {
-      if (err) reject(err);
-      else resolve(value);
-      display.remove(getInput);
-      display.render();
-    });
-  });
-}
-
-function stringifyMap(map: any) {
-  const mapString = map.slice().reverse();
-  return mapString.map((row: string[]) => row.join(" ")).join("\n");
-}
+import { stringifyMap } from "./utils";
 
 export async function main() {
+  function updateRoverSymbol(
+    map: Plateau,
+    rovers: Rover[],
+    activeIndex: number,
+    mapBox: any
+  ) {
+    for (let rover of rovers) {
+      map[rover.coordinates.y][rover.coordinates.x] =
+        orientationSymbols[rover.orientation];
+    }
+
+    const activeSymbol =
+      orientationSymbols.active[rovers[activeIndex].orientation];
+    map[rovers[activeIndex].coordinates.y][rovers[activeIndex].coordinates.x] =
+      activeSymbol;
+
+    mapBox.setContent(stringifyMap(map));
+    display.render();
+  }
+
+  const display = blessed.screen({
+    smartCSR: true,
+    title: "Map Display",
+  });
+
+  const orientationSymbols = {
+    N: "N",
+    E: "E",
+    S: "S",
+    W: "W",
+    active: {
+      N: "^",
+      E: ">",
+      S: "v",
+      W: "<",
+    },
+  };
+
+  display.key(["escape", "q", "C-c"], () => process.exit(0));
+
+  function promptUser(question: string, defaultValue = ""): Promise<string> {
+    const getInput = blessed.prompt({
+      border: "line",
+      height: "shrink",
+      width: "half",
+      top: "center",
+      left: "center",
+      label: " {blue-fg}Question{/blue-fg} ",
+      tags: true,
+      keys: true,
+      vi: true,
+      hidden: false,
+    });
+    return new Promise((resolve, reject) => {
+      display.append(getInput);
+      getInput.input(question, defaultValue, (err: any, value: any) => {
+        if (err) reject(err);
+        else resolve(value);
+        display.remove(getInput);
+        display.render();
+      });
+    });
+  }
+
   const plateauTopRight = await promptUser("Plateau top right (x y)");
 
   const numberOfRovers = parseInt(await promptUser("Number of rovers"));
@@ -213,24 +229,4 @@ export async function main() {
       }
     }
   );
-}
-
-function updateRoverSymbol(
-  map: Plateau,
-  rovers: Rover[],
-  activeIndex: number,
-  mapBox: any
-) {
-  for (let rover of rovers) {
-    map[rover.coordinates.y][rover.coordinates.x] =
-      orientationSymbols[rover.orientation];
-  }
-
-  const activeSymbol =
-    orientationSymbols.active[rovers[activeIndex].orientation];
-  map[rovers[activeIndex].coordinates.y][rovers[activeIndex].coordinates.x] =
-    activeSymbol;
-
-  mapBox.setContent(stringifyMap(map));
-  display.render();
 }

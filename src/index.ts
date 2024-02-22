@@ -1,6 +1,8 @@
+import { parse } from "path";
 import { Plateau, Coordinates, createPlateau, updatePlateau } from "./plateau";
 import { Rover, RoverInstruction, moveRover, turnRover } from "./rover";
 import { main } from "./ui";
+import { parseFile } from "./file-handling";
 
 export const handleInput = (input: string) => {
   if (!input) {
@@ -129,4 +131,15 @@ const isDuplicateStartingPosition = (
   });
 };
 
-main().catch((err) => console.error(err));
+const fileName = process.argv[2];
+
+if (fileName) {
+  const input = parseFile(fileName);
+  console.log("Input instructions:\n");
+  console.log(input + "\n");
+  const output = handleInput(input);
+  console.log("Output:\n");
+  console.log(output);
+} else {
+  main().catch((err) => console.error(err));
+}
