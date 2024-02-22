@@ -93,8 +93,8 @@ Controls
 - Press l to launch another rover
 - Press s to switch active rovers. This will cycle through the active rovers
 
-### File Based Input
+### File based input
 
 ```sh
-npm start \<filename\>
+npm start <filename>
 ```
