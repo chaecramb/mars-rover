@@ -77,17 +77,26 @@ npm test
 
 ### GUI
 
+For GUI mode it is suggested to run in a full screen standalone terminal window.
+
 ```sh
 npm start
 ```
 
-For simplicity of keyboard control, the arrow keys can be used to control the rover (these will be translated to commands the rover understands, e.g. L R M.)
+#### Controls
 
-Press q to quit the simulation.
+Movement
+
+- For simplicity of keyboard control, the arrow keys can be used to control the rover
+- Up to move forward
+- Left/Right to turn
+- These will be translated to commands the rover understands, e.g. L R M.
+
+Press q to quit the simulation
 
 Press l to launch another rover
 
-Press s to switch active rovers. This will cycle through the active rovers.
+Press s to switch active rovers. This will cycle through the active rovers
 
 ### File Based Input
 
